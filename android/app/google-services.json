@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "31838146111",
+    "firebase_url": "https://shopping-food-9cdec.firebaseio.com",
+    "project_id": "shopping-food-9cdec",
+    "storage_bucket": "shopping-food-9cdec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31838146111:android:a39b347dbed1a9a682728a",
+        "android_client_info": {
+          "package_name": "com.example.shopping_for_friends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31838146111-s59ltovmf3k51r2e2h5q79suan965p70.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANc-Tm1_-x5o1reM-yrWytd6MAmNV09ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31838146111-s59ltovmf3k51r2e2h5q79suan965p70.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

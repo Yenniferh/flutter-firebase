@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'services/firebase.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    createAccount("hyennifera@gmail.com", "perro123456");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
