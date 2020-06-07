@@ -1,10 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopping_for_friends/models/user.dart';
+
+import 'database.dart';
 
 
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final db = Firestore.instance;
+
+
+
+  User currentUser = User();
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
@@ -31,15 +39,39 @@ class AuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, String name) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+      UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
+      userUpdateInfo.displayName = name;
+      user.updateProfile(userUpdateInfo);
+      await DatabaseService(uid: user.uid).updateUserData(name);
+      /*currentUser = User(
+        email: user.email,
+        name: user.displayName,
+      );
+      await db
+          .collection('users')
+          .document(user.email)
+          .setData(currentUser.toMap());*/
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());
       return null;
     }
+  }
+
+  Future<void> addUserToFirestore({FirebaseUser user}) async {
+    // add user to firestore, email as document ID
+    currentUser = User(
+      email: user.email,
+      name: user.displayName,
+    );
+    await db
+        .collection('users')
+        .document(user.email)
+        .setData(currentUser.toMap());
   }
 
   // sign out

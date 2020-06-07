@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_for_friends/views/signin.dart';
-import 'package:shopping_for_friends/views/signup.dart';
+import 'package:shopping_for_friends/views/authentication/signin.dart';
+import 'package:shopping_for_friends/views/authentication/signup.dart';
 
 class Authenticate extends StatefulWidget {
   @override
