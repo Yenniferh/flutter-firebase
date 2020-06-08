@@ -60,7 +60,7 @@ class _ProductListState extends State<ProductList> {
         print("index"+i["name"].toString());
         productList.add(Product.fromJson(i));
       }
-      print('showCoursesService length ${productList.length}');
+      print('showProductsService length ${productList.length}');
       return productList;
     } else {
       return Future.error(response.statusCode.toString());
