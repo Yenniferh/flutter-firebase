@@ -61,16 +61,4 @@ class _FriendTileState extends State<FriendTile> {
                 )),
     );
   }
-
-  /* if (type == 0) {
-                print("Removed friend's list");
-                setState(() {
-                  isChoosen = false;
-                });
-              } else {
-                print("Added friend's list");
-                setState(() {
-                  isChoosen = true;
-                });
-              } */
 }
