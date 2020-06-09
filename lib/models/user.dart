@@ -9,7 +9,8 @@ class User {
 
   User({this.uid, this.name, this.email});
 
-  void addProductToList(Product p) {
+  void addProductToList(Product p,int quantity) {
+    p.quantity=quantity;
     myList.add(p);
   }
 
@@ -18,7 +19,9 @@ class User {
   }
 
   Map<String, dynamic> toMap() {
-    return {'email': email, 'name': name, 'uid': uid};
+     List<Map> lista =
+        this.myList != null ? this.myList.map((i) => i.toJson()).toList() : null;
+    return {'email': email, 'name': name, 'uid': uid,'lista':lista};
   }
 
   User.fromMap(Map<String, dynamic> map)

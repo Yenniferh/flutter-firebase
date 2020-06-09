@@ -5,11 +5,7 @@ class FriendsShoppingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Friend's shopping list"),
-        backgroundColor: Colors.lightBlueAccent[400],
-        elevation: 0.0,
-      ),
+      
       body: Container(
           child: Column(
         children: <Widget>[

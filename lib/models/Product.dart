@@ -2,11 +2,13 @@ class Product {
   String name;
   double price;
   String category;
+  int quantity;
   //Category catergory;
   Product.initial()
-      : name = '',
+      : name = 'probando',
         price = 0,
-        category = '';
+        category = '',
+        quantity=0;
 
   Product({ this.name, this.price, this.category });
 
@@ -16,6 +18,16 @@ class Product {
       price: json['price'],
       category: json['category'],
     );
+  }
+
+  toJson() {
+
+    return {
+      'name':this.name,
+      'price':this.price,
+      'category':this.category,
+      'quantity':this.quantity
+    };
   }
 }
 enum Category {

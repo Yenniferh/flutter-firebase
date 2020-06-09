@@ -48,6 +48,11 @@ class _SignUpState extends State<SignUp> {
                     children: <Widget>[
                       SizedBox(height: 20.0),
                       TextFormField(
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.mail),
+                          hintText: 'ejemplo@persona.com',
+                          labelText: 'Email',
+                        ),
                         validator: (val) =>
                             val.isEmpty ? 'Enter an email' : null,
                         onChanged: (val) {
@@ -56,6 +61,11 @@ class _SignUpState extends State<SignUp> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.lock),
+                          hintText: '*******',
+                          labelText: 'Contraseña',
+                        ),
                         obscureText: true,
                         validator: (val) => val.length < 6
                             ? 'Enter a password 6+ chars long'
@@ -66,6 +76,11 @@ class _SignUpState extends State<SignUp> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.person),
+                          hintText: 'Juancho Rois',
+                          labelText: 'Nombre',
+                        ),
                         validator: (val) => val.length < 2
                             ? 'Enter a name 2+ chars long'
                             : null,

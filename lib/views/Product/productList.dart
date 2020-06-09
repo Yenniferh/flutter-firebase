@@ -15,11 +15,7 @@ class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Product list"),
-        backgroundColor: Colors.lightBlueAccent[400],
-        elevation: 0.0,
-      ),
+      
       body: FutureBuilder(
         future: getProducts(),
         builder: (context, snapshot) {
