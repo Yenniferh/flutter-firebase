@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/shared/loading.dart';
 
+import '../../locator.dart';
+
 class SignUp extends StatefulWidget {
   final Function toggleView;
   SignUp({this.toggleView});
@@ -11,7 +13,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final AuthService _auth = AuthService();
+  AuthService _auth = locator<AuthService>();
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;

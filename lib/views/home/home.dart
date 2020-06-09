@@ -5,6 +5,7 @@ import 'package:shopping_for_friends/views/components/app-drawer.dart';
 import 'package:shopping_for_friends/views/Product/productList.dart';
 import 'package:shopping_for_friends/views/friends/friends_list.dart';
 
+import '../../locator.dart';
 import '../Product/productList.dart';
 import '../list/my_list.dart';
 
@@ -27,7 +28,7 @@ class PlaceholderWidget extends StatelessWidget {
 }
 
 class _HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
+  final AuthService _auth = locator<AuthService>();
   int _currentIndex = 0;
   final List<Widget> _children = [
     MyList(),
