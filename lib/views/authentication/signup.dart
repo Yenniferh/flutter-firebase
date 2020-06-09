@@ -67,7 +67,7 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         validator: (val) => val.length < 2
-                            ? 'Enter a password 2+ chars long'
+                            ? 'Enter a name 2+ chars long'
                             : null,
                         onChanged: (val) {
                           setState(() => name = val);
