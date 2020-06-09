@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_for_friends/views/components/button.dart';
 
 class FriendTile extends StatefulWidget {
   final String name;
@@ -29,35 +30,39 @@ class _FriendTileState extends State<FriendTile> {
           ),
           title: Text(widget.name),
           subtitle: Text(widget.price),
-          trailing: isChoosen ? _button(0) : _button(1)),
-    );
-  }
-
-  // type = 0 remove
-  // type = 1  add
-  Widget _button(int type) {
-    return Padding(
-        padding: EdgeInsets.only(right: 15),
-        child: Ink(
-          height: 35,
-          width: 35,
-          decoration: ShapeDecoration(
-            color: type == 0 ? Colors.redAccent : Colors.greenAccent[400],
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-            icon: type == 0
-                ? Icon(
+          trailing: isChoosen
+              ? Button(
+                  icon: Icon(
                     Icons.remove,
                     size: 17,
-                  )
-                : Icon(
+                  ),
+                  color: Colors.redAccent[400],
+                  tooltip: "Remove friend's list",
+                  onPress: () {
+                    print("Removed friend's list");
+                    setState(() {
+                      isChoosen = false;
+                    });
+                  },
+                )
+              : Button(
+                  icon: Icon(
                     Icons.add,
                     size: 17,
                   ),
-            color: Colors.white,
-            onPressed: () {
-              if (type == 0) {
+                  color: Colors.greenAccent[400],
+                  tooltip: "Add friend's list",
+                  onPress: () {
+                    print("Added friend's list");
+                    setState(() {
+                      isChoosen = true;
+                    });
+                  },
+                )),
+    );
+  }
+
+  /* if (type == 0) {
                 print("Removed friend's list");
                 setState(() {
                   isChoosen = false;
@@ -67,9 +72,5 @@ class _FriendTileState extends State<FriendTile> {
                 setState(() {
                   isChoosen = true;
                 });
-              }
-            },
-          ),
-        ));
-  }
+              } */
 }

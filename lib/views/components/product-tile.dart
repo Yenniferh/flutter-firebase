@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/models/Product.dart';
+import 'package:shopping_for_friends/views/components/button.dart';
 
 class ProductTile extends StatefulWidget {
   final Product product;
@@ -25,7 +26,7 @@ class _ProductTileState extends State<ProductTile> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         margin: EdgeInsets.all(2),
-        color: isAdded ? Colors.green[200] : Colors.white,
+        color: isAdded ? Colors.white60 : Colors.white,
         child: ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             leading: _itemIcon(widget.product),
@@ -36,22 +37,28 @@ class _ProductTileState extends State<ProductTile> {
             subtitle: Text('💲' + widget.product.price.toString()),
             isThreeLine: true,
             trailing: isAdded
-                ? (IconButton(
-                    icon: Icon(Icons.remove),
-                    color: Colors.redAccent[700],
+                ? (Button(
+                    icon: Icon(
+                      Icons.remove,
+                      size: 17,
+                    ),
+                    color: Colors.redAccent[400],
                     tooltip: "Remove from list",
-                    onPressed: () {
+                    onPress: () {
                       widget.delProduct();
                       setState(() {
                         isAdded = false;
                       });
                     },
                   ))
-                : (IconButton(
-                    icon: Icon(Icons.add),
-                    color: Colors.green[300],
+                : (Button(
+                    icon: Icon(
+                      Icons.add,
+                      size: 17,
+                    ),
+                    color: Colors.greenAccent[400],
                     tooltip: "Add to list",
-                    onPressed: () {
+                    onPress: () {
                       widget.addProduct();
                       setState(() {
                         isAdded = true;

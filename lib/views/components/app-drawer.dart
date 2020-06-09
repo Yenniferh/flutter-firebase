@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/views/Product/productList.dart';
 import 'package:shopping_for_friends/views/friends/friends_list.dart';
+import 'package:shopping_for_friends/views/list/my_list.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key key}) : super(key: key);
@@ -29,6 +30,15 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ProductList()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.receipt),
+            title: Text('My Shopping List'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MyList()),
               );
             },
           ),
