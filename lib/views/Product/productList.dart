@@ -44,7 +44,7 @@ class _MyListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var catalog = Provider.of<ProductModel>(context, listen: false);
-    //TODO verificar que este completa la lista
+    //TODO verificar que este cargada la lista
     catalog.getProducts();
     var item = catalog.getItem(index);
     return ProductTile(

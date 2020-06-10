@@ -22,6 +22,7 @@ class _ProductTileState extends State<ProductTile> {
   Widget build(BuildContext context) {
     var cart = Provider.of<CartModel>(context);
     if(cart.items.contains(widget.product)){
+      print(widget.product.quantity);
       isAdded=true;
     }
 

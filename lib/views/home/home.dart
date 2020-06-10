@@ -27,7 +27,7 @@ class PlaceholderWidget extends StatelessWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = locator<AuthService>();
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   final List<Widget> _children = [
     ProductList(),
     FriendsShoppingList(),

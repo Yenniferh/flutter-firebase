@@ -10,7 +10,7 @@ class CartModel extends ChangeNotifier {
 
   //bool _state= true; //true= se puede editar, false= listo y publico
   final List<int> _itemIds = [];
-
+  Map mapCars = Map<int, int>();
   ProductModel get catalog => _catalog;
 
   set catalog(ProductModel newCatalog) {
@@ -36,10 +36,17 @@ class CartModel extends ChangeNotifier {
 
   void add(Product item) {
     _itemIds.add(item.id);
+    mapCars[item.id]=0;
     notifyListeners();
   }
-
+  void edit(Product item, int q){
+    _catalog.products[item.id].changeQuantity(q);
+    mapCars[item.id]=q;
+    notifyListeners();
+    print(mapCars);
+  }
   void del(Product product) {
     _itemIds.remove(product.id);
+    mapCars.remove(product.id);
   }
 }
