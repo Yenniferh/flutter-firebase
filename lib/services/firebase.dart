@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopping_for_friends/models/Product.dart';
+import 'package:shopping_for_friends/models/cartList.dart';
 import 'package:shopping_for_friends/models/friend.dart';
 import 'package:shopping_for_friends/models/user.dart';
 
@@ -11,6 +12,9 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final db = Firestore.instance;
+
+  cartList cList= new cartList();
+
 
   User currentUser = User();
 
@@ -107,10 +111,14 @@ class AuthService {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
     this.db.collection("lists").document(uid).get().then((DocumentSnapshot ds) {
-      print(ds.data);
-      return ds;
+       cList = cartList.fromJson(ds.data);
+      /*for (Map i in ds.data['lista']) {
+      cList.add(Product.fromJson(true,0,i));
+      }*/
+
     });
   }
+
   Future<void> getLists() async {
    
     this.db.collection("lists")

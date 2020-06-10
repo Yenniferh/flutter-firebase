@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_for_friends/models/Product.dart';
+import 'package:shopping_for_friends/models/cartList.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 
 import '../../locator.dart';
@@ -9,6 +11,8 @@ class ShoppingList extends StatelessWidget {
    
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = locator<AuthService>();
+    _auth.getMyList();
     return Scaffold(
         body: ListView(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
@@ -47,25 +51,16 @@ class ShoppingList extends StatelessWidget {
                     color: Colors.white,
                     child: SizedBox(
                       height: 150,
-                      child: ListView(
-                        children: <Widget>[
-                          ListTile(
-                            title: Text("Banana"),
-                            subtitle: Text("200/und * 12"),
-                          ),
-                          ListTile(
-                            title: Text("Huevo"),
-                            subtitle: Text("350/und * 30"),
-                          ),
-                          ListTile(
-                            title: Text("Atún"),
-                            subtitle: Text("3800/und * 3"),
-                          ),
-                          ListTile(
-                            title: Text("Cebolla"),
-                            subtitle: Text("300/und * 12"),
-                          ),
-                        ],
+                      child: ListView.builder(
+                        itemCount: _auth.cList.products.length,
+                        itemBuilder: (context, index) {
+                          Product p = _auth.cList.products[index];//auth.currentUser.getFriend(index);
+                          return ListTile(
+                            title: Text(p.name),
+                            subtitle:
+                            Text(p.price.toString()+' * '+p.quantity.toString()),
+                          );
+                        },
                       ),
                     ),
 
@@ -79,7 +74,7 @@ class ShoppingList extends StatelessWidget {
                             bottomLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10))),
                     child: Text(
-                      "Total: \$25.000",
+                      "Total "+_auth.cList.total.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 22),
                       textAlign: TextAlign.center,
                     ),

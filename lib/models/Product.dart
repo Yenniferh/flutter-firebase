@@ -13,7 +13,7 @@ class ProductModel {
       final data = jsonDecode(response.body);
       List<Product> productList = [];
       for (Map i in data) {
-        productList.add(Product.fromJson(j,i));
+        productList.add(Product.fromJson(false,j,i));
         j=j+1;
       }
       products = productList;
@@ -48,13 +48,17 @@ class Product {
   void changeQuantity(int q){
     this.quantity=q;
   }
-  factory Product.fromJson(int i,Map<String, dynamic> json) {
+  factory Product.fromJson(bool w,int i,Map<String, dynamic> json) {
+    int q=0;
+    if(w){
+      q=json['quantity'];
+    }
     return Product(
         id: i,
         name: json['name'],
         price: json['price'],
         category: json['category'],
-        quantity: 0
+        quantity: q
     );
   }
 
