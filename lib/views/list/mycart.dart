@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/models/Product.dart';
 import 'package:shopping_for_friends/models/cartModel.dart';
+import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/views/components/my_list_tile.dart';
+
+import '../../locator.dart';
 
 class MyCart extends StatelessWidget {
   @override
@@ -40,14 +43,11 @@ class _CartList extends StatelessWidget {
 
     return ListView.builder(
         itemCount: cart.items.length,
-        itemBuilder: (context, index) =>
-            MyListTile(p: cart.items[index])
-    );
+        itemBuilder: (context, index) => MyListTile(p: cart.items[index]));
   }
 }
 
 class _CartTotal extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,25 +57,35 @@ class _CartTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Consumer<CartModel>(
-                builder: (context, cart, child) =>
-                    Text('\$${totalPrice(cart.items)}'"Total", /*style: hugeStyle*/)),
-            SizedBox(width: 24),
-            FlatButton(
-              onPressed: () {
-                Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text('Buying not supported yet.')));
-              },
-              color: Colors.blue,
-              child: Text('Post'),
-            ),
+                builder: (context, cart, child) => Column(
+                      children: <Widget>[
+                        Text(
+                          '\$${totalPrice(cart.items)}'
+                          "Total", /*style: hugeStyle*/
+                        ),
+                        SizedBox(width: 24),
+                        FlatButton(
+                          onPressed: () {
+                            final AuthService _auth = locator<AuthService>();
+                            _auth.addListToFirestore(cart.items);
+                            _auth.getLists();
+                             Navigator.of(context).pop();
+                          },
+                          color: Colors.blue,
+                          child: Text('Post'),
+                        ),
+                      ],
+                    )),
           ],
         ),
       ),
     );
   }
-  totalPrice(List<Product> items){
-    int total =0;
-    items.forEach((e) =>total =(total + e.quantity/*e.price.toInt()*/) as int);
+
+  totalPrice(List<Product> items) {
+    int total = 0;
+    items.forEach(
+        (e) => total = (total + e.quantity /*e.price.toInt()*/) as int);
     return total;
   }
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_for_friends/services/firebase.dart';
+
+import '../../locator.dart';
 
 class ShoppingList extends StatelessWidget {
+  
   const ShoppingList({Key key}) : super(key: key);
-
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +68,7 @@ class ShoppingList extends StatelessWidget {
                         ],
                       ),
                     ),
+
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
@@ -407,6 +412,14 @@ class ShoppingList extends StatelessWidget {
           ],
         )
       ],
-    ));
+    )
+    ,floatingActionButton: new FloatingActionButton(
+        tooltip: 'My car',
+        child: new Icon(Icons.shopping_cart),
+        onPressed:(){
+        final AuthService _auth = locator<AuthService>();
+        _auth.getMyList();
+        },
+      ),);
   }
 }

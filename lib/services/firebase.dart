@@ -14,7 +14,6 @@ class AuthService {
 
   User currentUser = User();
 
-
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -34,7 +33,7 @@ class AuthService {
           email: email, password: password);
       FirebaseUser user = result.user;
       final DocumentSnapshot userSnapshot =
-      await db.collection('users').document(user.uid).get();
+          await db.collection('users').document(user.uid).get();
       updateCurrentSignedInUser(user, userSnapshot);
       getFriendsList();
       print(currentUser.getFriendsList());
@@ -63,13 +62,10 @@ class AuthService {
           .setData(currentUser.toMap());
       await getFriendsList();
       return currentUser;
-
     } catch (error) {
       print(error.toString());
       return null;
     }
-
-
   }
 
   void updateCurrentSignedInUser(
@@ -78,7 +74,7 @@ class AuthService {
     currentUser = User.fromMap(userSnapshot.documentID, userSnapshot.data);
   }
 
-  getCollection(){
+  getCollection() {
     return this.db.collection("users").snapshots();
   }
 
@@ -95,16 +91,32 @@ class AuthService {
   }
 
   // Add given list to firebase database
-  Future<void> addListToFirestore(User usuario) async {
+  Future<void> addListToFirestore(List<Product> items) async {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
-    usuario.myList.add(Product());
-    usuario.myList.add(Product());
-    usuario.myList.add(Product());
+
     await db
         .collection('lists')
         .document(uid)
-        .updateData({'lista': usuario.myList.map((i) => i.toJson()).toList()});
+        .setData({'lista': items.map((i) => i.toJson()).toList()});
+    
+  }
+
+  Future<void> getMyList() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+    this.db.collection("lists").document(uid).get().then((DocumentSnapshot ds) {
+      print(ds.data);
+      return ds;
+    });
+  }
+  Future<void> getLists() async {
+   
+    this.db.collection("lists")
+      .getDocuments()
+      .then((QuerySnapshot snapshot) {
+    snapshot.documents.forEach((f) => print('${f.data}}'));
+  });
   }
 
   // sign out
@@ -117,20 +129,22 @@ class AuthService {
     }
   }
 
-  getFriendsList() async{
+  getFriendsList() async {
     List<Friend> friends = new List();
-    QuerySnapshot querySnapshot = await this.db.collection('users').getDocuments();
+    QuerySnapshot querySnapshot =
+        await this.db.collection('users').getDocuments();
     var lista = querySnapshot.documents;
-    lista.forEach((document)=>{
-      this.currentUser.addFriend(new Friend(document.documentID, document.data['name'], null))
-    });
+    lista.forEach((document) => {
+          this.currentUser.addFriend(
+              new Friend(document.documentID, document.data['name'], null))
+        });
     return friends;
   }
 
   Future<String> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
+        await googleSignInAccount.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleSignInAuthentication.accessToken,
@@ -148,7 +162,7 @@ class AuthService {
 
     // check if user already exists
     final DocumentSnapshot userSnapshot =
-    await db.collection('users').document(user.uid).get();
+        await db.collection('users').document(user.uid).get();
     if (userSnapshot.exists) {
       // user exists, retrieve user data from firestore
       //this.currentUser = User.fromMap(user.uid, userSnapshot.data);
@@ -161,7 +175,7 @@ class AuthService {
     return 'signInWithGoogle succeeded: $user';
   }
 
-  void signOutGoogle() async{
+  void signOutGoogle() async {
     await googleSignIn.signOut();
     print("User Sign Out");
   }
