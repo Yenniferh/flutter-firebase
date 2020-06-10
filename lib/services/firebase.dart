@@ -1,15 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopping_for_friends/models/Product.dart';
+import 'package:shopping_for_friends/models/friend.dart';
 import 'package:shopping_for_friends/models/user.dart';
 
 import 'database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   final db = Firestore.instance;
 
   User currentUser = User();
+
 
   // create user obj based on firebase user
   User _userFromFirebaseUser(FirebaseUser user) {
@@ -29,7 +33,12 @@ class AuthService {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
-      return user;
+      final DocumentSnapshot userSnapshot =
+      await db.collection('users').document(user.uid).get();
+      updateCurrentSignedInUser(user, userSnapshot);
+      getFriendsList();
+      print(currentUser.getFriendsList());
+      return currentUser;
     } catch (error) {
       print(error.toString());
       return null;
@@ -47,19 +56,30 @@ class AuthService {
       userUpdateInfo.displayName = name;
       user.updateProfile(userUpdateInfo);
       await DatabaseService(uid: user.uid).updateUserData(name);
-      /*currentUser = User(
-        email: user.email,
-        name: user.displayName,
-      );
+      currentUser = User(email: email, name: name, uid: user.uid);
       await db
           .collection('users')
-          .document(user.email)
-          .setData(currentUser.toMap());*/
-      return _userFromFirebaseUser(user);
+          .document(user.uid)
+          .setData(currentUser.toMap());
+      await getFriendsList();
+      return currentUser;
+
     } catch (error) {
       print(error.toString());
       return null;
     }
+
+
+  }
+
+  void updateCurrentSignedInUser(
+      FirebaseUser user, DocumentSnapshot userSnapshot) {
+    print("updating email");
+    currentUser = User.fromMap(userSnapshot.documentID, userSnapshot.data);
+  }
+
+  getCollection(){
+    return this.db.collection("users").snapshots();
   }
 
   Future<void> addUserToFirestore({FirebaseUser user}) async {
@@ -95,5 +115,54 @@ class AuthService {
       print(error.toString());
       return null;
     }
+  }
+
+  getFriendsList() async{
+    List<Friend> friends = new List();
+    QuerySnapshot querySnapshot = await this.db.collection('users').getDocuments();
+    var lista = querySnapshot.documents;
+    lista.forEach((document)=>{
+      this.currentUser.addFriend(new Friend(document.documentID, document.data['name'], null))
+    });
+    return friends;
+  }
+
+  Future<String> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    // check if user already exists
+    final DocumentSnapshot userSnapshot =
+    await db.collection('users').document(user.uid).get();
+    if (userSnapshot.exists) {
+      // user exists, retrieve user data from firestore
+      //this.currentUser = User.fromMap(user.uid, userSnapshot.data);
+      //updateCurrentSignedInUser(user, userSnapshot);
+    } else {
+      // user not exists, create a new user
+      await addUserToFirestore(user: user);
+    }
+    print('signInWithGoogle succeeded: $user');
+    return 'signInWithGoogle succeeded: $user';
+  }
+
+  void signOutGoogle() async{
+    await googleSignIn.signOut();
+    print("User Sign Out");
   }
 }

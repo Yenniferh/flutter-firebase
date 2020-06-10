@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "31838146111-6olrqrkpft233vfegr94jejr19ahdm3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopping_for_friends",
+            "certificate_hash": "71416fef130865f018f31574be63bb34aca2adc4"
+          }
+        },
+        {
           "client_id": "31838146111-s59ltovmf3k51r2e2h5q79suan965p70.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +38,13 @@
             {
               "client_id": "31838146111-s59ltovmf3k51r2e2h5q79suan965p70.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "31838146111-klem77nbogrtckotsno58igi03v3u563.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "shopping.food"
+              }
             }
           ]
         }
