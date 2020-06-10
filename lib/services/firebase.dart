@@ -91,14 +91,15 @@ class AuthService {
   }
 
   // Add given list to firebase database
-  Future<void> addListToFirestore(List<Product> items) async {
+  Future<void> addListToFirestore(List<Product> items, int total) async {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
 
     await db
         .collection('lists')
         .document(uid)
-        .setData({'lista': items.map((i) => i.toJson()).toList()});
+        .setData({'lista': items.map((i) => i.toJson()).toList(),
+                  'total': total});
     
   }
 
