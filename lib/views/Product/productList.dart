@@ -1,75 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/models/Product.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shopping_for_friends/views/components/product-tile.dart';
+import 'package:shopping_for_friends/views/list/mycart.dart';
 
-class ProductList extends StatefulWidget {
-  @override
-  _ProductListState createState() => _ProductListState();
-}
-
-class _ProductListState extends State<ProductList> {
-  List<Product> products = new List<Product>();
-
+class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      body: FutureBuilder(
-        future: getProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  Product element = snapshot.data[index];
-                  return ProductTile(
-                    product: element,
-                    addProduct: () => print('${element.name} added'),
-                    delProduct: () => print("${element.name} deleted"),
-                  );
-                },
-              );
-            } else {
-              return Container(
-                child: Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                ),
-              );
-            }
-          }
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.pink[300]),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: SizedBox(height: 12)),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int i) {
+                return _MyListItem(i);
+              },
+              childCount: 38,
             ),
+          ),
+        ],
+      ),
+      floatingActionButton: new FloatingActionButton(
+        tooltip: 'My car',
+        child: new Icon(Icons.shopping_cart),
+        onPressed:(){
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => MyCart()),
           );
         },
       ),
     );
   }
+}
 
-  //Get products of API
-  Future<List<Product>> getProducts() async {
-    final http.Response response =
-        await http.get('https://frutiland.herokuapp.com/search');
-    print('showProductService  => ${response.statusCode}');
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      List<Product> productList = [];
-      for (Map i in data) {
-        print("index" + i["name"].toString());
-        productList.add(Product.fromJson(i));
-      }
-      print('showProductsService length ${productList.length}');
-      return productList;
-    } else {
-      return Future.error(response.statusCode.toString());
-    }
+class _MyListItem extends StatelessWidget {
+  final int index;
+
+  _MyListItem(this.index, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var catalog = Provider.of<ProductModel>(context, listen: false);
+    //TODO verificar que este completa la lista
+    catalog.getProducts();
+    var item = catalog.getItem(index);
+    return ProductTile(
+      product: item,
+      addProduct: () => print('${item.name} added'),
+      delProduct: () => print("${item.name} deleted"),
+    );
   }
 }

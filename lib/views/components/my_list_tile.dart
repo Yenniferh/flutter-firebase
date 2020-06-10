@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_for_friends/models/Product.dart';
+import 'package:shopping_for_friends/models/cartModel.dart';
+
 
 class MyListTile extends StatefulWidget {
-  // Product p
-  final String name;
-  final String price;
-  String quantity;
+  final Product p;
 
-  MyListTile({this.name, this.price});
+  MyListTile({this.p});
 
   @override
   _MyListTileState createState() => _MyListTileState();
@@ -18,6 +19,13 @@ class _MyListTileState extends State<MyListTile> {
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<CartModel>(context);
+    int _n = 1;
+    void add() {
+      setState(() {
+        _n++;
+      });
+    }
     return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -30,24 +38,36 @@ class _MyListTileState extends State<MyListTile> {
               Icons.local_mall,
               size: 40,
             ),
-            title: Text(widget.name),
-            subtitle: Text(widget.price),
+            title: Text(widget.p.name),
+            subtitle: Text(widget.p.price.toString()),
             trailing: SizedBox(
               width: 40,
-              child: Form(
+              child:
+              Form(
                 key: _formKey,
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: '1',
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                  onChanged: (val) {
-                    setState(() => widget.quantity = val);
-                    print(widget.quantity);
-                  },
+                  validator: (val) => val.isEmpty ? 'Need  units' : null,
+                  onChanged: (val) => change(val,cart),
                 ),
               ),
-            )));
+            )
+        )
+    );
+  }
+  void change(val, cart){
+    print(val);
+    setState(() {
+      print(cart.items[widget.p.id].name);
+      print(cart.items[widget.p.id].quantity);
+      cart.items[widget.p.id].changeQuantity(int.parse(val));
+      print("change value");
+      print("val"+val);
+      print(cart.items[widget.p.id].quantity);
+    });
+
   }
 }

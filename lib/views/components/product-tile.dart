@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/models/Product.dart';
+import 'package:shopping_for_friends/models/cartModel.dart';
 import 'package:shopping_for_friends/views/components/button.dart';
 
 class ProductTile extends StatefulWidget {
@@ -18,6 +20,11 @@ class _ProductTileState extends State<ProductTile> {
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<CartModel>(context);
+    if(cart.items.contains(widget.product)){
+      isAdded=true;
+    }
+
     return Container(
       padding: new EdgeInsets.all(7.0),
       height: 100,
@@ -38,33 +45,35 @@ class _ProductTileState extends State<ProductTile> {
             isThreeLine: true,
             trailing: isAdded
                 ? (Button(
-                    icon: Icon(
-                      Icons.remove,
-                      size: 17,
-                    ),
-                    color: Colors.redAccent[400],
-                    tooltip: "Remove from list",
-                    onPress: () {
-                      widget.delProduct();
-                      setState(() {
-                        isAdded = false;
-                      });
-                    },
-                  ))
+              icon: Icon(
+                Icons.remove,
+                size: 17,
+              ),
+              color: Colors.redAccent[400],
+              tooltip: "Remove from list",
+              onPress: () {
+                widget.delProduct();
+                cart.del(widget.product);
+                setState(() {
+                  isAdded = false;
+                });
+              },
+            ))
                 : (Button(
-                    icon: Icon(
-                      Icons.add,
-                      size: 17,
-                    ),
-                    color: Colors.greenAccent[400],
-                    tooltip: "Add to list",
-                    onPress: () {
-                      widget.addProduct();
-                      setState(() {
-                        isAdded = true;
-                      });
-                    },
-                  ))),
+              icon: Icon(
+                Icons.add,
+                size: 17,
+              ),
+              color: Colors.greenAccent[400],
+              tooltip: "Add to list",
+              onPress: () {
+                widget.addProduct();
+                cart.add(widget.product);
+                setState(() {
+                  isAdded = true;
+                });
+              },
+            ))),
       ),
     );
   }
@@ -72,21 +81,21 @@ class _ProductTileState extends State<ProductTile> {
   Widget _itemIcon(Product item) {
     switch (item.category) {
       case "VERDURA":
-        return Icon(Icons.local_florist, size: 45.0);
+        return Icon(Icons.local_florist, size: 40.0);
       case "LACTEO":
-        return Icon(Icons.local_drink, size: 45.0);
+        return Icon(Icons.local_drink, size: 40.0);
       case "CARNE":
-        return Icon(Icons.brightness_1, size: 45.0);
+        return Icon(Icons.brightness_1, size: 40.0);
       case "LIMPIEZA":
-        return Icon(Icons.local_laundry_service, size: 45.0);
+        return Icon(Icons.local_laundry_service, size: 40.0);
       case "DESPENSA":
-        return Icon(Icons.kitchen, size: 45.0);
+        return Icon(Icons.kitchen, size: 40.0);
       case "FRUTA":
-        return Icon(Icons.local_florist, size: 45.0);
+        return Icon(Icons.local_florist, size: 40.0);
       case "SALUD":
-        return Icon(Icons.healing, size: 45.0);
+        return Icon(Icons.healing, size: 40.0);
       default:
-        return Icon(Icons.dialpad, size: 45.0);
+        return Icon(Icons.dialpad, size: 40.0);
     }
   }
 }

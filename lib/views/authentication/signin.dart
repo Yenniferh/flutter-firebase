@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/shared/loading.dart';
+import 'package:shopping_for_friends/views/authentication/signup.dart';
+import 'package:shopping_for_friends/views/home/home.dart';
 
 import '../../locator.dart';
 
@@ -36,7 +38,9 @@ class _SignInState extends State<SignIn> {
                 FlatButton.icon(
                   icon: Icon(Icons.person),
                   label: Text('Register'),
-                  onPressed: () => widget.toggleView(),
+                  onPressed: () {
+                    widget.toggleView();
+                  },
                 ),
               ],
             ),
@@ -91,6 +95,7 @@ class _SignInState extends State<SignIn> {
                                 error =
                                     'Could not sign in with those credentials';
                               });
+                            }else{
                             }
                           }
                         }),

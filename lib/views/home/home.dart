@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/views/Product/productList.dart';
+import 'package:shopping_for_friends/views/authentication/signin.dart';
 import 'package:shopping_for_friends/views/friends/friends_list.dart';
 import 'package:shopping_for_friends/views/shopping/shopping_list.dart';
 import '../../locator.dart';
 import '../Product/productList.dart';
-import '../list/my_list.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -30,7 +30,6 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     ProductList(),
-    MyList(),
     FriendsShoppingList(),
     ShoppingList()
   ];
@@ -64,10 +63,6 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_basket),
               title: Text('Product List'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('My list'),
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.group_add),
