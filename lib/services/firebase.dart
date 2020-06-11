@@ -111,6 +111,10 @@ class AuthService {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
     this.db.collection("lists").document(uid).get().then((DocumentSnapshot ds) {
+      print(ds.data);
+        if(ds.data==null){
+          cList= cartList(total: 0, products: null);
+        }
        cList = cartList.fromJson(ds.data);
       /*for (Map i in ds.data['lista']) {
       cList.add(Product.fromJson(true,0,i));

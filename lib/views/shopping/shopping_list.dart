@@ -13,58 +13,62 @@ class ShoppingList extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthService _auth = locator<AuthService>();
     _auth.getMyList();
+    int len=0;
+    if(_auth.cList.products!=null){
+      len=_auth.cList.products.length;
+    }
     return Scaffold(
         body: ListView(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Text("My Shopping List",
-                  style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black54)),
-            ),
-            Card(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.blue[400],
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10))),
-                    child: Text(
-                      "My items",
-                      style: TextStyle(color: Colors.white, fontSize: 22),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Card(
-                    margin: EdgeInsets.all(0),
-                    color: Colors.white,
-                    child: SizedBox(
-                      height: 150,
-                      child: ListView.builder(
-                        itemCount: _auth.cList.products.length,
-                        itemBuilder: (context, index) {
-                          Product p = _auth.cList.products[index];//auth.currentUser.getFriend(index);
-                          return ListTile(
-                            title: Text(p.name),
-                            subtitle:
-                            Text(p.price.toString()+' * '+p.quantity.toString()),
-                          );
-                        },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Text("My Shopping List",
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54)),
+                ),
+              Card(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.blue[400],
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10))),
+                      child: Text(
+                        "My items",
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                        textAlign: TextAlign.center,
                       ),
                     ),
+                    Card(
+                      margin: EdgeInsets.all(0),
+                      color: Colors.white,
+                      child: SizedBox(
+                        height: 150,
+                        child: ListView.builder(
+                          itemCount: len,
+                          itemBuilder: (context, index) {
+                            Product p = _auth.cList.products[index];//auth.currentUser.getFriend(index);
+                            return ListTile(
+                              title: Text(p.name),
+                              subtitle:
+                              Text(p.price.toString()+' * '+p.quantity.toString()),
+                            );
+                          },
+                        ),
+                      ),
 
-                  ),
+                    ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     width: MediaQuery.of(context).size.width,
