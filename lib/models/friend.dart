@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shopping_for_friends/models/Product.dart';
-
 class Friend {
   final String uid;
   final String name;

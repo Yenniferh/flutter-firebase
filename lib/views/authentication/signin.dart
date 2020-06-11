@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/shared/loading.dart';
-import 'package:shopping_for_friends/views/authentication/signup.dart';
-import 'package:shopping_for_friends/views/home/home.dart';
 
 import '../../locator.dart';
 

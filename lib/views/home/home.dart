@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/views/Product/productList.dart';
-import 'package:shopping_for_friends/views/authentication/signin.dart';
 import 'package:shopping_for_friends/views/friends/friends_list.dart';
 import 'package:shopping_for_friends/views/shopping/shopping_list.dart';
 import '../../locator.dart';

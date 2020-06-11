@@ -12,8 +12,14 @@ import '../../locator.dart';
 
 
 class MyCart extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<CartModel>(context);
+    int total =0;
+    cart.mapCarts.forEach((e,v) =>total =(total + v*cart.items[e].price.toInt()));
+    cart.items.forEach((e) => e.quantity=cart.mapCarts[e.id]);
     return Scaffold(
       appBar: AppBar(
         title: Text('Cart'),
@@ -56,15 +62,18 @@ class _Post extends StatelessWidget {
     int total =0;
     cart.mapCarts.forEach((e,v) =>total =(total + v*cart.items[e].price.toInt()));
     cart.items.forEach((e) => e.quantity=cart.mapCarts[e.id]);
-    return SizedBox(
-      height: 100,
+    return Container(
+      height: 80,
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Total"+'💲' +total.toString(), style:
-                  TextStyle(color: Colors.teal, fontSize: 20,
-                            fontStyle: FontStyle.italic),),
+            Consumer<CartModel>(
+                builder: (context, cart, child) =>
+                    Text("Total"+'💲' +total.toString(), style:
+                    TextStyle(color: Colors.teal, fontSize: 20,
+                        fontStyle: FontStyle.italic),)
+                      ),
             SizedBox(width: 54),
             FlatButton(
               onPressed: ()=>_showDialog(context, cart.items,total),
@@ -103,7 +112,6 @@ class _Post extends StatelessWidget {
               child: new Text("More"),
               onPressed: () {
                 Navigator.of(context).pop();
-
               },
             ),
           ],
@@ -112,5 +120,3 @@ class _Post extends StatelessWidget {
     );
   }
 }
-
-

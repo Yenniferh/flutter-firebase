@@ -107,19 +107,20 @@ class AuthService {
     
   }
 
-  Future<void> getMyList() async {
+   getMyList() async {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
-    this.db.collection("lists").document(uid).get().then((DocumentSnapshot ds) {
+    List<Product> prs= [];
+    await this.db.collection("lists").document(uid).get().then((DocumentSnapshot ds) {
       print(ds.data);
-        if(ds.data==null){
-          cList= cartList(total: 0, products: null);
+      if (ds.data == null) {
+        cList = cartList(total: 0, products: null);
+      } else {
+        for (Map i in ds.data['lista']) {
+          prs.add(Product.fromJson(true, 0, i));
         }
-       cList = cartList.fromJson(ds.data);
-      /*for (Map i in ds.data['lista']) {
-      cList.add(Product.fromJson(true,0,i));
-      }*/
-
+        cList = cartList(total: ds.data['total'], products: prs);
+      }
     });
   }
 

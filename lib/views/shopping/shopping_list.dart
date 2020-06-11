@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/models/Product.dart';
-import 'package:shopping_for_friends/models/cartList.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 
 import '../../locator.dart';

@@ -14,19 +14,12 @@ class CartModel extends ChangeNotifier {
   ProductModel get catalog => _catalog;
 
   set catalog(ProductModel newCatalog) {
-    //_state=true;
     assert(newCatalog != null);
     assert(_itemIds.every((id) => newCatalog.getItem(id) != null),
     'The catalog $newCatalog does not have one of $_itemIds in it.');
     _catalog = newCatalog;
 
     notifyListeners();
-  }
-
-  void closeCatalog() {
-    //TODO Limpiar la vista
-    _itemIds.clear();
-    mapCarts.clear();
   }
 
   /// List of items in the cart.

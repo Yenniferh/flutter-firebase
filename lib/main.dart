@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_for_friends/views/components/my_list_tile.dart';
 import 'package:shopping_for_friends/views/wrapper.dart';
 import 'locator.dart';
 import 'models/Product.dart';
 import 'models/cartModel.dart';
-import 'models/user.dart';
 import 'services/firebase.dart';
 
 void main() {

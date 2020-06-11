@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shopping_for_friends/models/friend.dart';
-import 'package:shopping_for_friends/models/user.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/views/components/friend-tile.dart';
 
