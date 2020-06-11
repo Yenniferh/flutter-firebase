@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_for_friends/locator.dart';
+import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/views/components/button.dart';
 
 class FriendTile extends StatefulWidget {
   final String name;
-  final String price;
+  final double price;
+  final String uid;
 
-  FriendTile({this.name, this.price});
+  FriendTile({this.name, this.price, this.uid});
 
   @override
   _FriendTileState createState() => _FriendTileState();
@@ -13,6 +16,7 @@ class FriendTile extends StatefulWidget {
 
 class _FriendTileState extends State<FriendTile> {
   bool isChoosen = false;
+  AuthService _auth = locator<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class _FriendTileState extends State<FriendTile> {
             size: 40,
           ),
           title: Text(widget.name),
-          subtitle: Text(widget.price),
+          subtitle: Text(widget.price.toString()),
           trailing: isChoosen
               ? Button(
                   icon: Icon(
@@ -40,6 +44,7 @@ class _FriendTileState extends State<FriendTile> {
                   tooltip: "Remove friend's list",
                   onPress: () {
                     print("Removed friend's list");
+                    _auth.addFriendList(widget.uid, widget.price);
                     setState(() {
                       isChoosen = false;
                     });

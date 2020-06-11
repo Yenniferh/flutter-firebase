@@ -79,7 +79,7 @@ class AuthService {
   }
 
   getCollection() {
-    return this.db.collection("users").snapshots();
+    return this.db.collection("lists").snapshots();
   }
 
   Future<void> addUserToFirestore({FirebaseUser user}) async {
@@ -94,6 +94,27 @@ class AuthService {
         .setData(currentUser.toMap());
   }
 
+  Future<void> addFriendList(String friendId, double price) async {
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+
+    await this.db.collection("lists").document(uid).get().then((DocumentSnapshot ds) async {
+      print(ds.data);
+      if (ds.data == null) {
+        cList = cartList(total: 0, products: null);
+      } else {
+        List<Product> prs= [];
+        for (Map i in ds.data['lista']) {
+          prs.add(Product.fromJson(true, 0, i));
+        }
+        prs.add(new Product(id: 0, name: friendId,price: price, category: 'amigo', quantity: 1));
+        await db
+            .collection('lists')
+            .document(uid).updateData({'lista': prs});
+      }
+    });
+  }
+
   // Add given list to firebase database
   Future<void> addListToFirestore(List<Product> items, int total) async {
     final FirebaseUser user = await _auth.currentUser();
@@ -103,7 +124,7 @@ class AuthService {
         .collection('lists')
         .document(uid)
         .setData({'lista': items.map((i) => i.toJson()).toList(),
-                  'total': total});
+                  'total': total,'name': user.displayName});
     
   }
 

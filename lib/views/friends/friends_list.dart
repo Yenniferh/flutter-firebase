@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/services/firebase.dart';
 import 'package:shopping_for_friends/views/components/friend-tile.dart';
@@ -11,20 +12,23 @@ class FriendsShoppingList extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _list(),
-    );
+    return new StreamBuilder<QuerySnapshot>(
+        stream: _auth.getCollection(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          return new ListView(children: getFriends(snapshot));
+        });
+
+//    return Scaffold(
+//      body: _list(),
+//    );
   }
 
-  Widget _list() {
-    print(_auth.currentUser.name);
-    return ListView.builder(
-      itemCount: _auth.currentUser.getFriendsList().length,//_auth.currentUser.getFriendsList().length,
-      itemBuilder: (context, index) {
-        var friend = _auth.currentUser.getFriend(index);//auth.currentUser.getFriend(index);
-        return FriendTile(name: friend.name, price: friend.price.toString());
-      },
-    );
+
+  getFriends(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return snapshot.data.documents
+        .map((doc) =>  FriendTile(name: doc["name"], price: doc["total"]+ .0, uid: doc.documentID))
+        .toList();
   }
 
 
